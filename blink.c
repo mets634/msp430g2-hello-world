@@ -30,7 +30,6 @@ int main(void) {
 	UNSET_BIT(P1IFG, BUTTON);
 	SET_BIT(P1REN, BUTTON);
 	SET_BIT(P1OUT, BUTTON);
-	SET_BIT(P1IES, BUTTON);
 
 	// Stop CPU and enable interrupts.
 	__bis_SR_register(CPUOFF | GIE);
