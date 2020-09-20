@@ -7,7 +7,7 @@
 #define UNSET_BIT(__register, __bit) (__register &= ~__bit)
 #define TOGGLE_BIT(__register, __bit) (__register ^= __bit)
 
-#define LED (BIT6)
+#define LED (BIT0 | BIT6)
 #define BUTTON (BIT3)
 
 #pragma vector=PORT1_VECTOR
@@ -22,7 +22,7 @@ int main(void) {
 
 	// Setup output LED.
 	SET_BIT(P1DIR, LED);
-	SET_BIT(P1OUT, LED);
+	UNSET_BIT(P1OUT, LED);
 
 	// Setup input button.
 	UNSET_BIT(P1DIR, BUTTON);
