@@ -5,16 +5,17 @@ LDFLAGS=
 SRCDIR=source
 BINDIR=bin
 
-TARGET=blink
+TARGET=
 
 
 .PHONY: all
 all: run
 
-$(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET).c
+$(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET)/main.c
 	mkdir -p $(BINDIR)
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
+build: $(BINDIR)/$(TARGET).elf
 run: $(BINDIR)/$(TARGET).elf
 	echo "prog $<\n exit" | mspdebug rf2500
 
