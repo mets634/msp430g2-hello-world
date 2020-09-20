@@ -8,13 +8,10 @@
 #define TOGGLE_BIT(__register, __bit) (__register ^= __bit)
 
 #define LED (BIT0 | BIT6)
-#define BUTTON (BIT3)
 
-#pragma vector=PORT1_VECTOR
-__interrupt void Port_1(void)
-{
+#pragma vector=TIMER0_A0_VECTOR
+__interrupt void timer0_a0_isr(void) {
 	TOGGLE_BIT(P1OUT, LED);
-	UNSET_BIT(P1IFG, BUTTON);
 }
 
 int main(void) {
@@ -24,12 +21,11 @@ int main(void) {
 	SET_BIT(P1DIR, LED);
 	UNSET_BIT(P1OUT, LED);
 
-	// Setup input button.
-	UNSET_BIT(P1DIR, BUTTON);
-	SET_BIT(P1IE, BUTTON);
-	UNSET_BIT(P1IFG, BUTTON);
-	SET_BIT(P1REN, BUTTON);
-	SET_BIT(P1OUT, BUTTON);
+	// Setup Timer
+	TACCR0 = 0;
+	SET_BIT(TACCTL0, CCIE);
+	TACTL = TASSEL_2 + ID_3 + MC_1;
+	TACCR0 = 60000;  // This is arbitrary
 
 	// Stop CPU and enable interrupts.
 	__bis_SR_register(CPUOFF | GIE);
