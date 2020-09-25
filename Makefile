@@ -5,11 +5,11 @@ LDFLAGS=
 SRCDIR=source
 BINDIR=bin
 
-TARGET=
-
 
 .PHONY: all
-all: run
+all:
+	bash compile_all.sh
+
 
 $(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET)/main.c
 	mkdir -p $(BINDIR)
@@ -18,6 +18,11 @@ $(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET)/main.c
 build: $(BINDIR)/$(TARGET).elf
 run: $(BINDIR)/$(TARGET).elf
 	echo "prog $<\n exit" | mspdebug rf2500
+
+
+.PHONY: debug
+debug:
+	mspdebug rf2500
 
 .PHONY: clean
 clean:
