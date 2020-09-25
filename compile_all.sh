@@ -1,9 +1,7 @@
 #!/bin/bash
 
-TARGETS="button_blink timer_blink"
-
 make clean
-for target in $TARGETS; do
+for target in $(ls $(pwd)/source); do
     make build TARGET=$target >/dev/null
     if [ $? == 0 ]; then
         echo "Successfully compiled $target"
