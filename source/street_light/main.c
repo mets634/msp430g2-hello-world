@@ -15,11 +15,9 @@
 
 
 #define TRANSITION(__current_state, __next_state) \
-    do {                                          \
         case (__current_state):                   \
             enter_state(__next_state);            \
-            break;                                \
-    } while (0)
+            break
 
 
 typedef enum {
@@ -81,15 +79,14 @@ void handle_timer_expired(void) {
 #pragma vector=PORT1_VECTOR
 __interrupt void toggle_on_or_off(void)
 {
-	enter_state(GREEN);
 	handle_button_click();
-	// handle_timer_expired();
 	TOGGLE_BIT(P1OUT, BIT6);
 	UNSET_BIT(P1IFG, BUTTON);
 }
 
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void transition_to_next_led(void) {
+	handle_timer_expired();
 	// TOGGLE_BIT(P1OUT, LED);
 }
 
@@ -111,6 +108,8 @@ int main(void) {
 	UNSET_BIT(P1IFG, BUTTON);
 	SET_BIT(P1REN, BUTTON);
 	SET_BIT(P1OUT, BUTTON);
+
+	enter_state(OFF);
 
 	// Stop CPU and enable interrupts.
 	__bis_SR_register(CPUOFF | GIE);
