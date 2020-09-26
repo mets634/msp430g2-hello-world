@@ -87,7 +87,6 @@ __interrupt void toggle_on_or_off(void)
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void transition_to_next_led(void) {
 	handle_timer_expired();
-	// TOGGLE_BIT(P1OUT, LED);
 }
 
 
@@ -98,7 +97,7 @@ int main(void) {
 	SET_BIT(P2DIR, LEDS);
 	UNSET_BIT(P2OUT, LEDS);
 
-	// DEBUG
+	// Setup on/off LED.
 	SET_BIT(P1DIR, BIT6);
 	UNSET_BIT(P1OUT, BIT6);
 
@@ -109,7 +108,13 @@ int main(void) {
 	SET_BIT(P1REN, BUTTON);
 	SET_BIT(P1OUT, BUTTON);
 
-	enter_state(OFF);
+	// Setup Timer
+	TACCR0 = 0;
+	SET_BIT(TACCTL0, CCIE);
+	TACTL = TASSEL_2 + ID_3 + MC_1;
+	TACCR0 = 60000;  // This is arbitrary
+
+	enter_state(OFF);  // Starting state is OFF.
 
 	// Stop CPU and enable interrupts.
 	__bis_SR_register(CPUOFF | GIE);
