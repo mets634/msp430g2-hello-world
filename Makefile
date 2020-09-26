@@ -11,7 +11,7 @@ all:
 	bash compile_all.sh
 
 
-$(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET)/main.c
+$(BINDIR)/$(TARGET).elf: $(SRCDIR)/$(TARGET)/main.c $(EXTRADEP)
 	mkdir -p $(BINDIR)
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
